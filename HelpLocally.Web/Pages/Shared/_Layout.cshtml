@@ -6,44 +6,48 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] | HelpLocally Michał Droździk</title>
+    <link rel="stylesheet" href="~/css/reset.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="~/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon/favicon-16x16.png">
+    <link rel="manifest" href="~/favicon/site.webmanifest">
+    <link rel="mask-icon" href="~/favicon/safari-pinned-tab.svg" color="#0c1035">
+    <meta name="msapplication-TileColor" content="#0c1035">
+    <meta name="theme-color" content="#ffffff">
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<body class="material-bg-def d-flex flex-column">
+    <header id="header" class="header material-bg-surf">
+        <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">HelpLocally.Web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Help Locally</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if(!this.User.Identity.IsAuthenticated)
+                    <ul class="navbar-nav w-100 justify-content-end">
+                        @if (!this.User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Identity/Register">Register</a>
+                            <li class="nav-item material-color-surf">
+                                <a class="nav-link" asp-page="/Identity/Register">Register</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Identity/Login">Log in</a>
+                            <li class="nav-item material-color-surf">
+                                <a class="nav-link" asp-page="/Identity/Login">Log in</a>
                             </li>
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a onclick="javascript: ;">Howdy, @(this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value)</a>
-                                <i>
-                                    @string.Join(", ",
-                                    this.User.Claims.Where(x => x.Type == ClaimTypes.Role)
-                                        .Select(x => x.Value))
-                                </i>
+                            <li class="nav-item material-color-surf">
+                                <a class="nav-link" onclick="javascript: ;">Howdy, @(this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value)</a>
+                                <span class="d-none">@string.Join(", ", this.User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value))</span>
                             </li>
-                            <li class="nav-item">
-                                <a asp-page="/Identity/Logout" class="nav-link text-dark">Log out</a>
+                            <li class="nav-item material-color-surf">
+                                <a class="nav-link" asp-page="/Identity/Logout">Log out</a>
                             </li>
-                          }
-                     </ul>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -54,11 +58,14 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer material-bg-surf" style="margin-top:auto">
         <div class="container">
-            &copy; 2020 - HelpLocally.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="footer__content">
+                <p class="material-color-surf">HelpLocally &copy; 2020 | Michał Droździk</p>
+            </div>
         </div>
     </footer>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
