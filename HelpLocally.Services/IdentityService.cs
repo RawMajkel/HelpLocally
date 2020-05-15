@@ -27,12 +27,12 @@ namespace HelpLocally.Services
             return _context.Roles.ToDictionary(y => y.Id, x => x.Name);
         }
 
-        public async Task TryRegisterAsync(string userLogin, string userPassword, Guid userRole)
+        public async Task TryRegisterAsync(string userName, string userPassword, Guid userRole)
         {
-            if (!await _context.Users.AnyAsync(x => x.Login == userLogin))
+            if (!await _context.Users.AnyAsync(x => x.UserName == userName))
             {
                 var passwordHash = BCrypt.Net.BCrypt.HashPassword(userPassword);
-                var user = new User(userLogin, passwordHash);
+                var user = new User(userName, passwordHash);
 
                 await _context.Users.AddAsync(user);
                 await _context.UserRoles.AddAsync(new UserRole { RoleId = userRole, UserId = user.Id });
@@ -43,9 +43,9 @@ namespace HelpLocally.Services
             // no user in db
         }
 
-        public async Task<(bool, User)> Authenticate(string userLogin, string userPassword)
+        public async Task<(bool, User)> Authenticate(string userName, string userPassword)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Login == userLogin);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
 
             if (user is { })
             {

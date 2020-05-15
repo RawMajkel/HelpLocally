@@ -1,20 +1,25 @@
 ﻿@page
 @model EditModel
+@{
+    ViewData["Title"] = "Edit company";
+}
 
-    <form method="post">
-        <input type="hidden" asp-for="Company.Id" />
-        <div class="form-group">
-            <label asp-for="Company.Name"></label>
-            <input asp-for="Company.Name" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label asp-for="Company.Nip"></label>
-            <input asp-for="Company.Nip" class="form-control" />
-        </div>
+<h1 class="material-color-def">Edit company</h1>
 
-        <div class="form-group">
-            <label asp-for="Company.BankAccountNumber"></label>
-            <input asp-for="Company.BankAccountNumber" class="form-control" />
-        </div>
-        <button class="btn btn-primary">Zapisz</button>
-    </form>
+<form method="post">
+    <input type="hidden" asp-for="Company.Id" />
+    <div class="form-group">
+        <label class="material-color-def" asp-for="Company.Name"></label>
+        <input asp-for="Company.Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label class="material-color-def" asp-for="Company.Nip"></label>
+        <input asp-for="Company.Nip" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label class="material-color-def" asp-for="Company.BankAccountNumber"></label>
+        <input asp-for="Company.BankAccountNumber" class="form-control" />
+    </div>
+    <button class="btn btn-primary">Zapisz</button>
+</form>

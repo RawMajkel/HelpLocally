@@ -12,10 +12,8 @@
     <div class="mt-5 pt-5">
         <h2 class="pt-5 material-color-def">Remember to set up your docker database:</h2>
 
-        <pre><code>
-docker-compose -f docker-compose.dev.yml up -d
+        <pre><code>docker-compose -f docker-compose.dev.yml up -d
 dotnet ef migrations add NazwaMigracji -s ../HelpLocally.Web/
-dotnet ef database update -s ../HelpLocally.Web/
-        </code></pre>
+dotnet ef database update -s ../HelpLocally.Web/</code></pre>
     </div>
 </div>

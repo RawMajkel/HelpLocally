@@ -10,7 +10,7 @@ namespace HelpLocally.Infrastructure.Configurations
         {
             builder.ToTable("Users");
 
-            builder.Property(x => x.Login).IsRequired();
+            builder.Property(x => x.UserName).IsRequired();
             builder.Property(x => x.PasswordHash).IsRequired();
         }
     }

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HelpLocally.Domain
 {
     public class User
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string Login { get; set; }
+        public string UserName { get; set; }
         public string PasswordHash { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
         //public virtual ICollection<Voucher> Vouchers { get; set; }
 
-        public User(string login, string passwordHash)
+        public User(string userName, string passwordHash)
         {
-            Login = login;
+            UserName = userName;
             PasswordHash = passwordHash;
         }
     }
