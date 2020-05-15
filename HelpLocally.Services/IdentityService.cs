@@ -1,6 +1,8 @@
 ﻿using HelpLocally.Domain;
 using HelpLocally.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HelpLocally.Services
@@ -14,9 +16,19 @@ namespace HelpLocally.Services
             _context = context;
         }
 
-        public async Task<Role[]> GetRolesAsync()
+        public Role[] GetRoles()
         {
-            return await _context.Roles.ToArrayAsync();
+            return _context.Roles.ToArray();
+        }
+
+        public Dictionary<Guid, string> GetRolesDictionary()
+        {
+            return _context.Roles.ToDictionary(y => y.Id, x => x.Name);
+        }
+
+        public async Task TryRegisterAsync(string login = null)
+        {
+            //return await _context.Users.AnyAsync(x => x.Login == login);
         }
     }
 }
