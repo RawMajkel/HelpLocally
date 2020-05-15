@@ -4,21 +4,21 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
+<h1 class="material-color-def">Register</h1>
 
 <form method="post">
     <div class="form-group">
-        <label>Login</label>
+        <label class="material-color-def">Login</label>
         <input type="text" asp-for="Register.Login" class="form-control" />
         <span asp-validation-for="Register.Login" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label>Password</label>
+        <label class="material-color-def">Password</label>
         <input type="password" asp-for="Register.Password" class="form-control" />
         <span asp-validation-for="Register.Password" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label>Role</label>
+        <label class="material-color-def">Role</label>
         <select class="form-control" asp-for="@Model.SelectedRole" asp-items="@Model.Roles"></select>
     </div>
     <button class="btn btn-primary">Register</button>

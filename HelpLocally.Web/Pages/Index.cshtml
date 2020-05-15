@@ -5,6 +5,17 @@
 }
 
 <div class="text-center">
-    <h1 class="material-color-def">HelpLocally</h1>
+    <h1 class="material-color-def">HelpLocally - .NET Core Razor</h1>
     <p class="material-color-def">Log in to start the journey of your life</p>
+    <button class="btn mt-3 btn-primary">Log in</button>
+
+    <div class="mt-5 pt-5">
+        <h2 class="pt-5 material-color-def">Remember to set up your docker database:</h2>
+
+        <pre><code>
+docker-compose -f docker-compose.dev.yml up -d
+dotnet ef migrations add NazwaMigracji -s ../HelpLocally.Web/
+dotnet ef database update -s ../HelpLocally.Web/
+        </code></pre>
+    </div>
 </div>

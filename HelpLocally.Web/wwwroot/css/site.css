@@ -3,6 +3,10 @@ body {
     min-height: 100vh;
 }
 
+pre {
+    color: #ccc;
+}
+
 /* override bootstrap styles */
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-weight: 300 !important;
@@ -25,6 +29,13 @@ body .table thead th {
 
 body .table thead {
     background-color: #1F1F1F !important;
+}
+
+body .form-control,
+body .form-control:focus {
+    background-color: #1F1F1F;
+    border: none;
+    color: #fff;
 }
 
 /* material styles */
@@ -72,9 +83,9 @@ body .table thead {
     transition: color 300ms ease;
 }
 
-    .nav-link:hover {
-        color: #fff !important;
-    }
+.nav-link:hover {
+    color: #fff !important;
+}
 
 .footer {
     margin-top: 70px;

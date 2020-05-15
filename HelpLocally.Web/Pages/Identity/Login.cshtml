@@ -4,16 +4,16 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
+<h1 class="material-color-def">Login</h1>
 
 <form method="post">
     <div class="form-group">
-        <label>Login</label>
+        <label class="material-color-def">Login</label>
         <input type="text" asp-for="Login.Login" class="form-control" />
         <span asp-validation-for="Login.Login" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label>Password</label>
+        <label class="material-color-def">Password</label>
         <input type="password" asp-for="Login.Password" class="form-control" />
         <span asp-validation-for="Login.Password" class="text-danger"></span>
     </div>
