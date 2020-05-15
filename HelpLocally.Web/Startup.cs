@@ -1,10 +1,14 @@
 using HelpLocally.Infrastructure;
+using HelpLocally.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace HelpLocally.Web
 {
@@ -20,8 +24,27 @@ namespace HelpLocally.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IdentityService>();
+
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddDbContext<HelpLocallyContext>(builder => { builder.UseNpgsql(Configuration.GetConnectionString("HelpLocallyConnectionString")); });
+
+            services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, a =>
+                {
+                    a.LoginPath = "/Identity/Login";
+                    a.Cookie.Name = "Identity.Login";
+                    a.Cookie.HttpOnly = true;
+                    a.Cookie.IsEssential = true;
+                    a.ExpireTimeSpan = new TimeSpan(24, 0, 0);
+                });
+
+            services.Configure<CookiePolicyOptions>(opt =>
+            {
+                opt.CheckConsentNeeded = context => true;
+                opt.MinimumSameSitePolicy = SameSiteMode.None;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +66,8 @@ namespace HelpLocally.Web
 
             app.UseRouting();
 
+            app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

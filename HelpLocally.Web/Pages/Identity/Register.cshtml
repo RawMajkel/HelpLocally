@@ -5,3 +5,14 @@
 }
 
 <h1>Register</h1>
+
+<form action="/" method="post">
+    <div class="form-group">
+        <select>
+            @foreach (var role in Model.Roles)
+            {
+                <option value="value">@role.Name</option>
+            }
+        </select>
+    </div>
+</form>
