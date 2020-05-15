@@ -13,10 +13,8 @@ namespace HelpLocally.Web.Pages.Identity
     {
         private readonly IdentityService _identityService;
 
-
         [BindProperty(SupportsGet = true)]
         public RegisterViewModel Register { get; set; }
-
 
         [BindProperty]
         public Guid SelectedRole { get; set; }
@@ -43,7 +41,7 @@ namespace HelpLocally.Web.Pages.Identity
 
             await _identityService.TryRegisterAsync(Register.Login, Register.Password, SelectedRole);
 
-            return Redirect("/");
+            return Redirect("/Identity/Login");
         }
     }
 }

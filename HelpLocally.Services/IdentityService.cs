@@ -1,6 +1,5 @@
 ﻿using HelpLocally.Domain;
 using HelpLocally.Infrastructure;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -44,7 +43,7 @@ namespace HelpLocally.Services
             // no user in db
         }
 
-        public async Task Login(string userLogin, string userPassword)
+        public async Task<(bool, User)> Authenticate(string userLogin, string userPassword)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Login == userLogin);
 
@@ -52,13 +51,16 @@ namespace HelpLocally.Services
             {
                 if(BCrypt.Net.BCrypt.Verify(userPassword, user.PasswordHash))
                 {
-                    //_userManager.
+                    return (true, user);
                 }
-
-                // password invalid
             }
+            return (false, null); // no user in db
+        }
 
-            // no user in db
+        public async Task<Role> GetUserRoleAsync(User user)
+        {
+            var userRole = await _context.UserRoles.FirstOrDefaultAsync(x => x.UserId == user.Id);
+            return await _context.Roles.FirstOrDefaultAsync(x => x.Id == userRole.RoleId);
         }
     }
 }

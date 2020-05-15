@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -18,13 +20,30 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-page="/Identity/Register">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-page="/Identity/Login">Log in</a>
-                        </li>
-                    </ul>
+                        @if(!this.User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Identity/Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Identity/Login">Log in</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a onclick="javascript: ;">Howdy, @(this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value)</a>
+                                <i>
+                                    @string.Join(", ",
+                                    this.User.Claims.Where(x => x.Type == ClaimTypes.Role)
+                                        .Select(x => x.Value))
+                                </i>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-page="/Identity/Logout" class="nav-link text-dark">Log out</a>
+                            </li>
+                          }
+                     </ul>
                 </div>
             </div>
         </nav>

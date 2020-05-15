@@ -13,10 +13,10 @@ namespace HelpLocally.Web.ViewModels.Identity
         public RegisterViewModelValidator()
         {
             RuleFor(x => x.Login)
-                .NotEmpty().WithMessage("Login must not me empty");
+                .NotEmpty().WithMessage("Login must not be empty");
 
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("Password must not me empty")
+                .NotEmpty().WithMessage("Password must not be empty")
                 .MinimumLength(5).WithMessage("Password must contain at least 5 characters");
         }
     }
