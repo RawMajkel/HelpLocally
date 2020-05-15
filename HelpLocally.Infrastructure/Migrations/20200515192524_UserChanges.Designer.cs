@@ -3,15 +3,17 @@ using System;
 using HelpLocally.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HelpLocally.Infrastructure.Migrations
 {
     [DbContext(typeof(HelpLocallyContext))]
-    partial class HelpLocallyContextModelSnapshot : ModelSnapshot
+    [Migration("20200515192524_UserChanges")]
+    partial class UserChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,17 +67,17 @@ namespace HelpLocally.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f3dc1535-5996-4e62-b9e0-c77835630739"),
+                            Id = new Guid("feec1bbe-e310-4136-8b3a-a5613a1d51c2"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("fb555b1d-d7a5-4849-aa60-8bbf8a555cdb"),
+                            Id = new Guid("9d27ea85-ffdb-4dcd-8232-11c8a48decb7"),
                             Name = "Company"
                         },
                         new
                         {
-                            Id = new Guid("0778e789-2445-43b1-a6c9-6f9fcac62961"),
+                            Id = new Guid("6eb59577-d41f-4bdd-a073-badcee263b73"),
                             Name = "Customer"
                         });
                 });
@@ -90,9 +92,6 @@ namespace HelpLocally.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("text");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -100,6 +99,36 @@ namespace HelpLocally.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("HelpLocally.Domain.UserRole", b =>
+                {
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("RoleId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("HelpLocally.Domain.UserRole", b =>
+                {
+                    b.HasOne("HelpLocally.Domain.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HelpLocally.Domain.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

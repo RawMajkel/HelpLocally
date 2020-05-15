@@ -3,15 +3,17 @@ using System;
 using HelpLocally.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HelpLocally.Infrastructure.Migrations
 {
     [DbContext(typeof(HelpLocallyContext))]
-    partial class HelpLocallyContextModelSnapshot : ModelSnapshot
+    [Migration("20200515202016_OneRoleOnly")]
+    partial class OneRoleOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

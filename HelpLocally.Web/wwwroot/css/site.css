@@ -7,6 +7,26 @@ pre {
     color: #ccc;
 }
 
+.table td, .table th {
+    vertical-align: middle;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.dropdown-menu {
+    background-color: #1f1f1f;
+}
+
+.dropdown-divider {
+    margin: .4rem 0;
+    border-top: 1px solid rgba(255,255,255,.1);
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    color: #fff;
+    background-color: #1f1f1f;
+}
+
 /* override bootstrap styles */
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-weight: 300 !important;

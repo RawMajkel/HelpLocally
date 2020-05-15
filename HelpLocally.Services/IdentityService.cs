@@ -8,35 +8,27 @@ using System.Threading.Tasks;
 
 namespace HelpLocally.Services
 {
-    public class IdentityService
+    public class IdentityService : BaseService
     {
-        private readonly HelpLocallyContext _context;
-
-        public IdentityService(HelpLocallyContext context)
+        public IdentityService(HelpLocallyContext context) : base(context)
         {
-            _context = context;
+
         }
 
-        public Role[] GetRoles()
-        {
-            return _context.Roles.ToArray();
-        }
+        public Role[] GetRoles() => _context.Roles.ToArray();
 
-        public Dictionary<Guid, string> GetRolesDictionary()
-        {
-            return _context.Roles.ToDictionary(y => y.Id, x => x.Name);
-        }
+        public Dictionary<Guid, string> GetRolesDictionary() => _context.Roles.ToDictionary(y => y.Id, x => x.Name);
 
         public async Task TryRegisterAsync(string userName, string userPassword, Guid userRole)
         {
             if (!await _context.Users.AnyAsync(x => x.UserName == userName))
             {
                 var passwordHash = BCrypt.Net.BCrypt.HashPassword(userPassword);
-                var user = new User(userName, passwordHash);
+                var role = await _context.Roles.FirstOrDefaultAsync(x => x.Id == userRole);
+
+                var user = new User(userName, passwordHash, role.Name);
 
                 await _context.Users.AddAsync(user);
-                await _context.UserRoles.AddAsync(new UserRole { RoleId = userRole, UserId = user.Id });
-
                 await _context.SaveChangesAsync();
             }
 
@@ -55,12 +47,6 @@ namespace HelpLocally.Services
                 }
             }
             return (false, null); // no user in db
-        }
-
-        public async Task<Role> GetUserRoleAsync(User user)
-        {
-            var userRole = await _context.UserRoles.FirstOrDefaultAsync(x => x.UserId == user.Id);
-            return await _context.Roles.FirstOrDefaultAsync(x => x.Id == userRole.RoleId);
         }
     }
 }

@@ -36,7 +36,6 @@ namespace HelpLocally.Web.Pages.Identity
 
             var authentication = await _identityService.Authenticate(Login.UserName, Login.Password);
             var user = authentication.Item2;
-            var role = await _identityService.GetUserRoleAsync(user);
 
             if (authentication.Item1)
             {
@@ -46,7 +45,7 @@ namespace HelpLocally.Web.Pages.Identity
                     new Claim(ClaimTypes.Name, Login.UserName),
                 };
 
-                claims.Add(new Claim(ClaimTypes.Role, role.Name));
+                claims.Add(new Claim(ClaimTypes.Role, user.Role));
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties());

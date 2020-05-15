@@ -1,7 +1,6 @@
 ﻿using HelpLocally.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 
 namespace HelpLocally.Infrastructure
@@ -10,7 +9,6 @@ namespace HelpLocally.Infrastructure
     {
         public DbSet<Company> Companies { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<User> Users { get; set; }
 
         public static readonly ILoggerFactory DbLoggerFactory = LoggerFactory.Create(DbContextOptionsBuilder => { DbContextOptionsBuilder.AddConsole(); });
