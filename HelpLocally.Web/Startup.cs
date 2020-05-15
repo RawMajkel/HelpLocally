@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using HelpLocally.Infrastructure;
 using HelpLocally.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -26,8 +27,13 @@ namespace HelpLocally.Web
         {
             services.AddTransient<IdentityService>();
 
-            services.AddRazorPages().AddRazorRuntimeCompilation();
-            services.AddDbContext<HelpLocallyContext>(builder => { builder.UseNpgsql(Configuration.GetConnectionString("HelpLocallyConnectionString")); });
+            services
+                .AddRazorPages()
+                .AddRazorRuntimeCompilation()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            services
+                .AddDbContext<HelpLocallyContext>(builder => { builder.UseNpgsql(Configuration.GetConnectionString("HelpLocallyConnectionString")); });
 
             services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

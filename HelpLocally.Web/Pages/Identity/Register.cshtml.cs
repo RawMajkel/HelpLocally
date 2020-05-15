@@ -41,7 +41,7 @@ namespace HelpLocally.Web.Pages.Identity
                 return Page();
             }
 
-            await _identityService.TryRegisterAsync();
+            await _identityService.TryRegisterAsync(Register.Login, Register.Password, SelectedRole);
 
             return Redirect("/");
         }

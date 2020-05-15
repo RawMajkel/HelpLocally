@@ -1,5 +1,7 @@
 ﻿using HelpLocally.Domain;
 using HelpLocally.Infrastructure;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +28,37 @@ namespace HelpLocally.Services
             return _context.Roles.ToDictionary(y => y.Id, x => x.Name);
         }
 
-        public async Task TryRegisterAsync(string login = null)
+        public async Task TryRegisterAsync(string userLogin, string userPassword, Guid userRole)
         {
-            //return await _context.Users.AnyAsync(x => x.Login == login);
+            if (!await _context.Users.AnyAsync(x => x.Login == userLogin))
+            {
+                var passwordHash = BCrypt.Net.BCrypt.HashPassword(userPassword);
+                var user = new User(userLogin, passwordHash);
+
+                await _context.Users.AddAsync(user);
+                await _context.UserRoles.AddAsync(new UserRole { RoleId = userRole, UserId = user.Id });
+
+                await _context.SaveChangesAsync();
+            }
+
+            // no user in db
+        }
+
+        public async Task Login(string userLogin, string userPassword)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Login == userLogin);
+
+            if (user is { })
+            {
+                if(BCrypt.Net.BCrypt.Verify(userPassword, user.PasswordHash))
+                {
+                    //_userManager.
+                }
+
+                // password invalid
+            }
+
+            // no user in db
         }
     }
 }
