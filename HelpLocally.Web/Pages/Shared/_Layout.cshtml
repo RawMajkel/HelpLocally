@@ -40,37 +40,46 @@
                     else
                     {
                         <ul class="navbar-nav w-100 justify-content-start">
-                            <li class="nav-item material-color-surf position-relative">
-                                <a class="nav-link dropdown-toggle" asp-page="/Offers/Index" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Companies</a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="material-color-surf dropdown-item" asp-page="/Companies/Create">Create</a> @*TODO*@
-                                    <a class="material-color-surf dropdown-item" asp-page="/Companies/Edit">Edit</a> @*TODO*@
-                                    <div class="dropdown-divider"></div>
-                                    <a class="material-color-surf dropdown-item" href="#">List</a> @*TODO*@
-                                </div>
-                            </li>
-                            <li class="nav-item material-color-surf position-relative">
-                                <a class="nav-link dropdown-toggle" asp-page="/Offers/Index" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Offers</a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="material-color-surf dropdown-item" asp-page="/Offers/Create">Create</a> @*TODO*@
-                                    <a class="material-color-surf dropdown-item" asp-page="/Offers/Edit">Edit</a> @*TODO*@
-                                    <div class="dropdown-divider"></div>
-                                    <a class="material-color-surf dropdown-item" href="#">List</a> @*TODO*@
-                                </div>
-                            </li>
-                            <li class="nav-item material-color-surf position-relative">
-                                <a class="nav-link dropdown-toggle" asp-page="/Offers/Index" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="material-color-surf dropdown-item" asp-page="/Identity/Register">Register</a>
-                                    <a class="material-color-surf dropdown-item" asp-page="/Identity/Edit">Edit</a> @*TODO*@
-                                    <div class="dropdown-divider"></div>
-                                    <a class="material-color-surf dropdown-item" asp-page="/Identity/List">List</a> @*TODO*@
-                                </div>
-                            </li>
+                            @if (this.User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item material-color-surf position-relative">
+                                    <a class="nav-link dropdown-toggle" asp-page="/Offers/Index" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Companies</a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="material-color-surf dropdown-item" asp-page="/Companies/Create">Create</a>
+                                        <a class="material-color-surf dropdown-item" asp-page="/Companies/List">List</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item material-color-surf position-relative">
+                                    <a class="nav-link dropdown-toggle" asp-page="/Offers/Index" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="material-color-surf dropdown-item" asp-page="/Identity/Register">Register</a>
+                                        <a class="material-color-surf dropdown-item" asp-page="/Identity/List">List</a>
+                                    </div>
+                                </li>
+                            }
+
+                            @if (this.User.IsInRole("Company"))
+                            {
+                                <li class="nav-item material-color-surf position-relative">
+                                    <a class="nav-link dropdown-toggle" asp-page="/Offers/Index" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Offers</a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="material-color-surf dropdown-item" asp-route-UserId="@this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value" asp-page="/Offers/Create">Create</a>
+                                        <a class="material-color-surf dropdown-item" asp-route-UserId="@this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value" asp-page="/Offers/List">List</a>
+                                    </div>
+                                </li>
+                            }
+
+                            @if (this.User.IsInRole("Customer"))
+                            {
+                                <li class="nav-item material-color-surf">
+                                    <a class="nav-link dropdown-toggle" asp-page="/Customer/Offers">Offers</a>
+                                </li>
+                            }
                         </ul>
                         <ul class="navbar-nav w-100 justify-content-end">
                             <li class="nav-item material-color-surf">
-                                <span title="@string.Join(", ", this.User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value))" class="nav-link">Howdy, @(this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value)</span>
+                                @{ var role = string.Join(", ", this.User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x => x.Value)); }
+                                <span title="Role: @role" class="nav-link">Howdy, @(this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value) (@role)</span>
                             </li>
                             <li class="nav-item material-color-surf">
                                 <a class="nav-link" asp-page="/Identity/Logout">Log out</a>
@@ -81,7 +90,7 @@
             </div>
         </nav>
     </header>
-    
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

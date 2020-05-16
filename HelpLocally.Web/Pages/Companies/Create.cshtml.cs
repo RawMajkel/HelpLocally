@@ -1,37 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using HelpLocally.Domain;
-using HelpLocally.Infrastructure;
+using HelpLocally.Services;
+using HelpLocally.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HelpLocally.Web.Pages
 {
     public class CreateModel : PageModel
     {
-        private readonly HelpLocallyContext _context;
+        private readonly CompanyService _companyService;
+
+        [BindProperty(SupportsGet = true)]
+        public CompanyViewModel Company { get; set; }
+
 
         [BindProperty]
-        public Company Company { get; set; }
+        public Guid SelectedUser { get; set; }
+        public SelectList Users { get; set; }
 
-        public CreateModel(HelpLocallyContext context)
+        public CreateModel(CompanyService companyService)
         {
-            _context = context;
+            _companyService = companyService;
+
+            var users = _companyService.GetUsersDictionary();
+            Users = new SelectList(users, "Key", "Value");
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnPostAsync()
         {
+            if (!PageContext.ModelState.IsValid)
+            {
+                var validator = new CompanyViewModelValidator();
+                var createCheck = validator.Validate(Company);
+                createCheck.AddToModelState(ModelState, nameof(Company));
 
-        }
+                return Page();
+            }
 
-        public async Task OnPostAsync()
-        {
-            await _context.Companies.AddAsync(Company);
-            await _context.SaveChangesAsync();
+            var company = new Company
+            {
+                Name = Company.Name,
+                Nip = Company.Nip,
+                BankAccountNumber = Company.BankAccountNumber,
+                OwnerId = SelectedUser
+            };
+
+            await _companyService.AddAsync(company);
+
+            return Redirect("/");
         }
     }
 }

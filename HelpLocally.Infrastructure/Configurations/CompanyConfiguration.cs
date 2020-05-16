@@ -14,7 +14,7 @@ namespace HelpLocally.Infrastructure.Configurations
             builder.Property(x => x.Nip).IsRequired();
             builder.Property(x => x.BankAccountNumber).IsRequired();
 
-            builder.HasIndex(x => x.Name);
+            builder.HasIndex(x => x.Name).IsUnique();
         }
     }
 }

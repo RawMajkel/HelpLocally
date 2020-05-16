@@ -42,7 +42,7 @@ namespace HelpLocally.Web.Pages.Identity
                 var claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, Login.UserName),
+                    new Claim(ClaimTypes.Name, Login.UserName)
                 };
 
                 claims.Add(new Claim(ClaimTypes.Role, user.Role));

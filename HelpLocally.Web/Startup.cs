@@ -26,6 +26,8 @@ namespace HelpLocally.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IdentityService>();
+            services.AddTransient<CompanyService>();
+            services.AddTransient<OfferService>();
 
             services
                 .AddRazorPages()
@@ -54,8 +56,10 @@ namespace HelpLocally.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CompanyService companyService)
         {
+            //companyService.RegenerateDbAsync().Wait();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

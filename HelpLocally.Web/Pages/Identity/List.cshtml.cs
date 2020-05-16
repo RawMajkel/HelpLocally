@@ -19,7 +19,7 @@ namespace HelpLocally.Web.Pages.Identity
 
         public async Task OnGetAsync()
         {
-            Users = await _identityService.GetAll<User>();
+            Users = await _identityService.GetAllAsync<User>();
         }
     }
 }

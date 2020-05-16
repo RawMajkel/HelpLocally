@@ -10,6 +10,8 @@ namespace HelpLocally.Infrastructure
         public DbSet<Company> Companies { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<OfferType> OfferTypes { get; set; }
+        public DbSet<Offer> Offers { get; set; }
 
         public static readonly ILoggerFactory DbLoggerFactory = LoggerFactory.Create(DbContextOptionsBuilder => { DbContextOptionsBuilder.AddConsole(); });
 
@@ -31,6 +33,12 @@ namespace HelpLocally.Infrastructure
                 new Role { Name = "Admin" },
                 new Role { Name = "Company" },
                 new Role { Name = "Customer" }
+            });
+            
+            modelBuilder.Entity<OfferType>().HasData(new List<OfferType>
+            {
+                new OfferType { Name = "Voucher", Description = "Voucher type of offer" },
+                new OfferType { Name = "Product", Description = "Standard product" }
             });
         }
     }

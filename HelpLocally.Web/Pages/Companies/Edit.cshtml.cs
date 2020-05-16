@@ -1,42 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using HelpLocally.Domain;
-using HelpLocally.Infrastructure;
+using HelpLocally.Services;
+using HelpLocally.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace HelpLocally.Web.Pages
 {
     public class EditModel : PageModel
     {
-        private readonly HelpLocallyContext _context;
+        private readonly CompanyService _companyService;
 
         [BindProperty(SupportsGet = true)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [BindProperty]
-        public Company Company { get; set; }
+        public CompanyViewModel Company { get; set; }
 
-        public EditModel(HelpLocallyContext context)
+        public EditModel(CompanyService companyService)
         {
-            _context = context;
+            _companyService = companyService;
         }
 
         public async Task OnGetAsync()
         {
-            Company = await _context.Companies.FindAsync(Id);
+            var company = await _companyService.GetEntityByIdAsync<Company>(Id);
+
+            Company = new CompanyViewModel
+            {
+                Name = company.Name,
+                Nip = company.Nip,
+                BankAccountNumber = company.BankAccountNumber
+            };
         }
 
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
-            var company = await _context.Companies.FindAsync(Company.Id);
+            var company = await _companyService.GetEntityByIdAsync<Company>(Id);
+
             company.Name = Company.Name;
-            
-            await _context.SaveChangesAsync();
+            company.Nip = Company.Nip;
+            company.BankAccountNumber = Company.BankAccountNumber;
+
+            await _companyService.SaveDbAsync();
+
+            return Redirect("/Companies/List");
         }
     }
 }

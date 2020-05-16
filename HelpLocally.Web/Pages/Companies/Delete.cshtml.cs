@@ -6,26 +6,26 @@ using HelpLocally.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace HelpLocally.Web.Pages.Identity
+namespace HelpLocally.Web.Pages.Companies
 {
     public class DeleteModel : PageModel
     {
-        private readonly IdentityService _identityService;
+        private readonly CompanyService _companyService;
 
         [BindProperty(SupportsGet = true)]
         public Guid Id { get; set; }
 
-        public DeleteModel(IdentityService identityService)
+        public DeleteModel(CompanyService companyService)
         {
-            _identityService = identityService;
+            _companyService = companyService;
         }
 
-        public IEnumerable<User> Users { get; set; }
+        public IEnumerable<Company> Companies { get; set; }
 
         public async Task<ActionResult> OnGetAsync()
         {
-            var user = await _identityService.GetEntityByIdAsync<User>(Id);
-            await _identityService.DeleteAsync(user);
+            var company = await _companyService.GetEntityByIdAsync<Company>(Id);
+            await _companyService.DeleteAsync(company);
 
             return Redirect("/");
         }
